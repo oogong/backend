@@ -11,7 +11,7 @@ const getClusterResult = async (stockList) => {
     ids.push(id);
   });
 
-  // match scale
+  // match scale with min-max normalization
   const scaledFeatures = await matchScale(features);
 
   // analyze
@@ -48,7 +48,8 @@ function transfromDemension(features) {
   return pca.predict(features).to2DArray();
 }
 
-function matchIdWithPcaResult(result, ids) {
+function matchIdWithPcaResult(pca, ids) {
+  const result = getMinMaxScale(pca);
   return result.map((point, index) => [ids[index], point[0], point[1]]);
 }
 
@@ -71,6 +72,17 @@ function getClusterResultResponse(result, kmeans) {
     });
   });
   return clusterResult;
+}
+
+// min-max normailzation
+function getMinMaxScale(features) {
+  const allValues = features.flat();
+  const min = Math.min(...allValues);
+  const max = Math.max(...allValues);
+
+  return features.map((feature) => {
+    return feature.map((val) => ((val - min) / (max - min)) * 100);
+  });
 }
 
 module.exports = {
