@@ -4,7 +4,6 @@ const router = express.Router();
 const clusterService = require("../service/ClusterService");
 
 router.post("/", async (req, res) => {
-  console.log(req.body);
   const { stockList } = req.body;
 
   return res.json(await clusterService.getClusterResult(stockList));
