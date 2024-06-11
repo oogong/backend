@@ -11,8 +11,29 @@ const getClusterResult = async (stockList) => {
     ids.push(id);
   });
 
-  // scale 맞추기 -> 정규화
-  const scaledFeatures = features.map((feature) => {
+  // match scale
+  const scaledFeatures = await matchScale(features);
+
+  // analyze
+  const pcaResult = await transfromDemension(scaledFeatures);
+
+  // map demension and match id with pca result
+  const pcaResultAndId = await matchIdWithPcaResult(pcaResult, ids);
+
+  // kmeans clustering
+  const kmeansResult = await kmeansClustering(pcaResult);
+
+  // cluster to response
+  const clusterResult = await getClusterResultResponse(
+    pcaResultAndId,
+    kmeansResult
+  );
+
+  return clusterResult;
+};
+
+function matchScale(features) {
+  return features.map((feature) => {
     const mean = feature.reduce((acc, val) => acc + val, 0) / feature.length;
     const std = Math.sqrt(
       feature.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) /
@@ -20,36 +41,37 @@ const getClusterResult = async (stockList) => {
     );
     return feature.map((val) => (val - mean) / std);
   });
+}
 
-  // 주성분 분석
-  const pca = new PCA(scaledFeatures);
-  const pcaResult = pca.predict(scaledFeatures).to2DArray();
+function transfromDemension(features) {
+  const pca = new PCA(features);
+  return pca.predict(features).to2DArray();
+}
 
-  // 2차원으로 변환
-  const pcaResultAndId = pcaResult.map((point, index) => [
-    ids[index],
-    point[0],
-    point[1],
-  ]);
-  console.log(pcaResultAndId);
+function matchIdWithPcaResult(result, ids) {
+  return result.map((point, index) => [ids[index], point[0], point[1]]);
+}
 
-  // kmeans clustering
-  const kmeansResult = kmeans(pcaResult, 5); // kmeans 함수 호출
+function kmeansClustering(result) {
+  return kmeans(result, 5);
+}
+
+function getClusterResultResponse(result, kmeans) {
   const clusterResult = Array.from({ length: 5 }, (_, id) => ({
     id,
     data: [],
   }));
 
   // 클러스터에 대한 id 매핑
-  const clusteredData = kmeansResult.clusters.map((cluster, index) => {
+  kmeans.clusters.map((cluster, index) => {
     clusterResult[cluster].data.push({
-      id: pcaResultAndId[index][0],
-      x: pcaResultAndId[index][1],
-      y: pcaResultAndId[index][2],
+      id: result[index][0],
+      x: result[index][1],
+      y: result[index][2],
     });
   });
   return clusterResult;
-};
+}
 
 module.exports = {
   getClusterResult,
