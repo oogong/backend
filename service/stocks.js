@@ -11,6 +11,15 @@ const searchCorporate = async (keyword) => {
   return { code: corporate[0].code };
 };
 
+const searchIncludedCorporate = async (keyword) => {
+  const regex = new RegExp(keyword, "i");
+  const corporate = await Corporate.find({ name: regex });
+  console.log(corporate);
+
+  return corporate;
+};
+
 module.exports = {
   searchCorporate,
+  searchIncludedCorporate,
 };
