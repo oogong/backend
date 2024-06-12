@@ -37,8 +37,11 @@ mongoose
   .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    dbName: "MonkeyRanking",
   })
-  .then(() => console.log("MongoDB connected"))
+  .then(async () => {
+    console.log("MongoDB connected");
+  })
   .catch((e) => console.log(e));
 
 var app = express();

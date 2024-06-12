@@ -1,4 +1,4 @@
-const { mongo, default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const CorporateSchema = new mongoose.Schema(
   {
