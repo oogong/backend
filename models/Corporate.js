@@ -1,6 +1,6 @@
 const { mongo, default: mongoose } = require("mongoose");
 
-const CoperateSchema = new mongoose.Schema(
+const CorporateSchema = new mongoose.Schema(
   {
     code: {
       type: String,
@@ -36,6 +36,6 @@ const CoperateSchema = new mongoose.Schema(
   }
 );
 
-const Coperate = mongoose.model("Stock", CoperateSchema);
+const Corporate = mongoose.model("Corporate", CorporateSchema);
 
-module.exports = Coperate;
+module.exports = Corporate;

@@ -1,16 +1,16 @@
-const Coperate = require("../models/Corporate");
+const Corporate = require("../models/Corporate");
 const CustomError = require("../common/error/CustomError");
 
-const searchCoperate = async (keyword) => {
-  const coperate = await Coperate.find();
-  console.log(coperate);
+const searchCorporate = async (keyword) => {
+  const corporate = await Corporate.find();
+  console.log(corporate);
 
-  if (coperate.length === 0) {
-    return new CustomError(404, "Coperate is not found");
+  if (corporate.length === 0) {
+    return new CustomError(404, "Corporate is not found");
   }
-  return { code: coperate[0].code };
+  return { code: corporate[0].code };
 };
 
 module.exports = {
-  searchCoperate,
+  searchCorporate,
 };

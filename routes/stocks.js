@@ -16,7 +16,7 @@ router.get("/", function (req, res, next) {
 
 router.get("/search/:keyword", async function (req, res, next) {
   const keyword = req.params.keyword;
-  return res.json(await stocks.searchStocks(keyword));
+  return res.json(await stocks.searchCorporate(keyword));
 });
 
 module.exports = router;
