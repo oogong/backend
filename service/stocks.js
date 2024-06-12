@@ -2,7 +2,7 @@ const Corporate = require("../models/Corporate");
 const CustomError = require("../common/error/CustomError");
 
 const searchCorporate = async (keyword) => {
-  const corporate = await Corporate.find();
+  const corporate = await Corporate.find({ name: keyword });
   console.log(corporate);
 
   if (corporate.length === 0) {
