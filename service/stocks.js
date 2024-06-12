@@ -1,16 +1,16 @@
-const Stocks = require("../models/Stock");
+const Coperate = require("../models/Corporate");
 const CustomError = require("../common/error/CustomError");
 
-const searchStocks = async (keyword) => {
-  const stock = await Stocks.find({ name: keyword });
-  console.log(stock);
+const searchCoperate = async (keyword) => {
+  const coperate = await Coperate.find();
+  console.log(coperate);
 
-  if (stock.length === 0) {
-    return new CustomError(404, "Stock is not found");
+  if (coperate.length === 0) {
+    return new CustomError(404, "Coperate is not found");
   }
-  return { code: stock[0].code };
+  return { code: coperate[0].code };
 };
 
 module.exports = {
-  searchStocks,
+  searchCoperate,
 };

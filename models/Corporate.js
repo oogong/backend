@@ -1,7 +1,9 @@
-const StockSchema = new mongoose.Schema(
+const { mongo, default: mongoose } = require("mongoose");
+
+const CoperateSchema = new mongoose.Schema(
   {
     code: {
-      type: Number,
+      type: String,
       required: true,
     },
     name: {
@@ -28,13 +30,12 @@ const StockSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-
   },
   {
     timestamps: true,
   }
 );
 
-const Stock = mongoose.model("Stock", StockSchema);
+const Coperate = mongoose.model("Stock", CoperateSchema);
 
-module.exports = Stock;
+module.exports = Coperate;
