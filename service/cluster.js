@@ -4,8 +4,6 @@ const { kmeans } = require("ml-kmeans");
 const getClusterResult = async (stockList) => {
   const ids = [];
   const features = [];
-  // const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff"];
-
   stockList.forEach((stock) => {
     const { id, profitability, stability, activity, potential, ogoong_rate } =
       stock;
@@ -62,7 +60,6 @@ function kmeansClustering(result) {
 function getClusterResultResponse(result, kmeans) {
   const clusterResult = Array.from({ length: 5 }, (_, id) => ({
     id,
-    // color: colors[index],
     data: [],
   }));
 
