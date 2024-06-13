@@ -11,6 +11,9 @@ const searchCorporate = async (keyword) => {
 };
 
 const searchIncludedCorporate = async (keyword) => {
+  if (keyword === null || keyword === "" || keyword === undefined) {
+    return [];
+  }
   const regex = new RegExp(keyword, "i");
   const corporates = await Corporate.find({ name: regex });
 
