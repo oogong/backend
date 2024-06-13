@@ -14,14 +14,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create .env file
+
         run: |
           echo "PORT=$PORT" >> .env
           echo "MONGO_URI=$MONGO_URI" >> .env
-<<<<<<< HEAD
-          echo "CLIENT_URL" >> .env
-=======
           echo "CLIENT_URL=$CLIENT_URL" >> .env
->>>>>>> 635a29b0d1bbcbc924d9410b46ceaef1a00f0c31
+
         env:
           PORT: ${{ secrets.PORT }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
