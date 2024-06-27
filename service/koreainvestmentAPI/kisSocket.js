@@ -13,7 +13,7 @@ let compares = [{}];
 ws.on("open", async function open() {
   console.log("KIS WebSocket connection opened");
 
-  const batchSize = 41; // 한 번에 요청할 종목 수
+  const batchSize = 40; // 한 번에 요청할 종목 수
   const numBatches = Math.ceil(codeList.length / batchSize); // 필요한 배치 수 계산
 
   for (let batch = 0; batch < numBatches; batch++) {
@@ -22,10 +22,10 @@ ws.on("open", async function open() {
     const currentBatch = codeList.slice(startIndex, endIndex);
 
     // 새로운 접근키를 가져오는 함수 호출
-    const approval_key = await (batch === 0
+    const approval_key = await (batch !== 0
       ? getStoredApprovalKey()
       : issueApprovalKey());
-
+    console.log(approval_key);
     for (let code of currentBatch) {
       console.log("Requesting stock data for code:", code);
 
@@ -45,6 +45,7 @@ ws.on("open", async function open() {
       });
       ws.send(message);
     }
+    break;
   }
 });
 
@@ -54,9 +55,10 @@ var key = null;
 
 ws.on("message", async function incoming(data) {
   const responseData = data.toString("utf8");
-  const parsedData = JSON.parse(responseData);
 
   if (firstConnection) {
+    const parsedData = JSON.parse(responseData);
+
     if (parsedData.header.tr_id === "PINGPONG") {
       console.log("Received PINGPONG");
     } else if (parsedData.body.msg1 === "SUBSCRIBE SUCCESS") {
