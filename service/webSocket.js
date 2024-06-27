@@ -6,6 +6,7 @@ const {
   getPriceOfStock,
   getCompareOfStock,
 } = require("./koreainvestmentAPI/kisSocket");
+const { marketOpen } = require("./koreainvestmentAPI/tradingSession");
 
 const handleChatSocketConnection = (io) => {
   io.on("connection", (socket) => {
@@ -85,11 +86,8 @@ const handlePriceSocketConnection = (io) => {
 
       let status = false;
       if (getPriceOfStock(stockCode)) {
-        console.log(
-          stockCode,
-          "Using stored price data:",
-          getPriceOfStock(stockCode)
-        );
+        status = true;
+      } else if (marketOpen) {
         status = true;
       }
 
